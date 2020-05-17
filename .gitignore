@@ -1,2 +1,2 @@
 codeval-venv/
-**/project/__pycache__/
+**/*/__pycache__/
