@@ -19,3 +19,11 @@ class User(db.Model):
 
     def __repr__(self):
         return f"<User(username={self.username}, email={self.email})>"
+
+    def to_json(self):
+        return dict(
+            username=self.username,
+            email=self.email,
+            active=self.active,
+            id=self.id
+        )

@@ -70,3 +70,15 @@ def get_user(user_id):
     except exc.DataError as e:
         response_object['message'] = 'Only integer id supported'
         return jsonify(response_object), 400
+
+@users_blueprint.route("/users", methods=['GET'])
+def get_users():
+    users = User.query
+
+    response_object = {
+        'status': 'success',
+        'data': {
+            'users': [user.to_json() for user in users]
+        }
+    }
+    return jsonify(response_object), 200
