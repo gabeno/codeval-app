@@ -34,7 +34,6 @@ def add_users():
         if not user:
             db.session.add(User(username=username, email=email))
             db.session.commit()
-            print(f"adding ... {user}")
             response_object['message'] = f'{email} was added!'
             response_object['status'] = 'success'
             return jsonify(response_object), 201
@@ -43,4 +42,31 @@ def add_users():
             return jsonify(response_object), 400
     except exc.IntegrityError as e:
         db.session.rollback()
+        return jsonify(response_object), 400
+
+@users_blueprint.route("/users/<user_id>", methods=['GET'])
+def get_user(user_id):
+    response_object = {
+        'status': 'fail',
+        'data': None,
+        'message': 'User does not exist'
+    }
+
+    try:
+        user = User.query.filter(User.id==user_id).first()
+        if not user:
+            return jsonify(response_object), 404
+        else:
+            data = dict(
+                username=user.username,
+                email=user.email,
+                active=user.active,
+                id=user.id
+            )
+            response_object['data'] = data
+            response_object['status'] = 'success'
+            response_object['message'] = 'User {user} found!'
+            return jsonify(response_object), 200
+    except exc.DataError as e:
+        response_object['message'] = 'Only integer id supported'
         return jsonify(response_object), 400
