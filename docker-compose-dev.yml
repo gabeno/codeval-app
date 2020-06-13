@@ -17,6 +17,7 @@ services:
             DATABASE_TEST_URL: postgres://postgres:postgres@users-db:5432/users_test
         depends_on:
             - users-db
+        container_name: users-backend
 
     users-db:
         build:
@@ -27,3 +28,4 @@ services:
         environment:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: postgres
+        container_name: users-db
